@@ -31,7 +31,7 @@ function App() {
     html2canvas(previewRef.current, { backgroundColor: "#ffffff" }).then(
       (canvas) => {
         const link = document.createElement("a");
-        link.href = canvas.toDataURL("image/jpeg", 1.0); // Convert to JPG
+        link.href = canvas.toDataURL("image/jpeg", 1.0);
         link.download = "post.jpg";
         link.click();
       }
@@ -84,7 +84,11 @@ function App() {
                 </Form.Group>
                 <Form.Group className="mb-3">
                   <Form.Label>Upload Image:</Form.Label>
-                  <Form.Control type="file" accept="image/*" onChange={handleImageChange} />
+                  <Form.Control
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageChange}
+                  />
                 </Form.Group>
               </Form>
             </div>
@@ -98,26 +102,54 @@ function App() {
               <h3>Preview</h3>
             </div>
             <div className="card-body">
-              <div ref={previewRef} className="preview" style={{ 
-                padding: "20px", 
-                textAlign: "center", 
-                // background: "#ffffff", 
-                border: "1px solid #ddd",
-                width: "100%",
-                // maxWidth: "400px",
-                margin: "auto"
-              }}>
-                {profile.image && (
-                  <img
-                    src={profile.image}
-                    alt="Uploaded"
-                    style={{ maxWidth: "100%", height: "auto", marginBottom: "10px" }}
-                  />
-                )}
-                <h3>{profile.name || "Hello"}</h3>
-                <p>{profile.greeting || "As salam alaikum"}</p>
-                <p>{profile.message || "Download your post by the button below"}</p>
+              <div
+                ref={previewRef}
+                className="preview"
+                style={{
+                  position: "relative",
+                  width: "100%",
+                  height: "300px",
+                  borderRadius: "10px",
+                  overflow: "hidden",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  textAlign: "center",
+                  backgroundColor: "#ddd",
+                  backgroundImage: profile.image
+                    ? `url(${profile.image})`
+                    : `url("/img/bg.png")`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+              >
+                {/* Dark overlay for readability */}
+                <div
+                  style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.3)",
+                  }}
+                ></div>
+
+                {/* Text Content */}
+                <div
+                  style={{
+                    position: "absolute",
+                    color: "white",
+                    fontWeight: "bold",
+                    zIndex: 2,
+                  }}
+                >
+                  <h3>{profile.name || "Hello"}</h3>
+                  <p>{profile.greeting || "As salam alaikum"}</p>
+                  <p>{profile.message || "Download your post by the button below"}</p>
+                </div>
               </div>
+
               <Button style={{ marginTop: "10px" }} onClick={handleDownload}>
                 Download as JPG
               </Button>
